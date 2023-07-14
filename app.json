@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "SwiftyCompanion1",
-    "slug": "SwiftyCompanion1",
+    "name": "SwiftyCompanion",
+    "slug": "SwiftyCompanion",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
