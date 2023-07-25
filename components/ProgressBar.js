@@ -3,7 +3,6 @@ import { View, Text } from 'react-native';
 import { ProgressBar } from 'react-native-paper';
 
 const MyProgressBar = ({ value, color }) => {
-    console.log(value);
     let decimalValue = (value.toString().split('.')[1]) || 0;
     const progress = parseFloat("0." + decimalValue);
 
