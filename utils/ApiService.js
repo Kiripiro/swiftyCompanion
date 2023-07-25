@@ -11,7 +11,6 @@ class ApiService {
 
             if (response.status === 200) {
                 const data = await response.json();
-                console.log(data);
                 const level = data.cursus_users.find(cursus => cursus.cursus_id === 21).level;
                 const user = {
                     login: data.login,
@@ -23,6 +22,7 @@ class ApiService {
                     pool_year: data.pool_year,
                     kind: data.kind,
                     level: level,
+                    skills: data.cursus_users.find(cursus => cursus.cursus_id === 21).skills,
                 }
                 return user;
             } else if (response.status === 401) {
@@ -33,7 +33,6 @@ class ApiService {
                 throw new Error('Failed to fetch user data');
             }
         } catch (error) {
-            console.error(error);
             throw error;
         }
     }
@@ -65,7 +64,6 @@ class ApiService {
                 throw new Error('Failed to fetch user data');
             }
         } catch (error) {
-            console.error(error);
             throw error;
         }
     }
@@ -94,7 +92,6 @@ class ApiService {
                 throw new Error('Failed to fetch user data');
             }
         } catch (error) {
-            console.error(error);
             throw error;
         }
     }

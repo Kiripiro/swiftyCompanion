@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { CLIENT_ID, SECRET } from "@env"
+import { ThemeProvider } from 'react-native-paper';
 
 class TokenManager {
     async getTokenInfo() {
@@ -10,7 +11,6 @@ class TokenManager {
                 if (isTokenValid) {
                     return token;
                 } else {
-                    deleteToken();
                     const newToken = await this.fetchNewToken();
                     await this.saveToken(newToken);
                     return newToken;
@@ -21,36 +21,31 @@ class TokenManager {
                 return newToken;
             }
         } catch (error) {
-            console.error('Error retrieving or generating token:', error);
+            throw new Error('Error retrieving or generating token:', error);
         }
     }
 
     async isTokenValid(token) {
         try {
             if (!token) {
-                console.error('No token provided');
-                return false;
+                throw new Error('No token provided');
             }
             const tokenExpiration = token.created_at + 7200;
             const currentTime = Math.floor(Date.now() / 1000);
             if (tokenExpiration < currentTime) {
-                console.error('Token is expired');
-                return false;
+                throw new Error('Token is expired');
             }
             return true;
         } catch (error) {
-            console.error(error);
             return false;
         }
     }
 
     async fetchNewToken() {
-        console.log('Fetching new token');
         try {
             let client_id = CLIENT_ID;
             let client_secret = SECRET;
 
-            console.log(client_id);
             if (!client_id || !client_secret) {
                 throw new Error('Missing .env data');
             }
@@ -70,7 +65,6 @@ class TokenManager {
                 throw new Error('Failed to fetch new token');
             }
         } catch (error) {
-            console.error(error);
             throw error;
         }
     }
@@ -79,7 +73,7 @@ class TokenManager {
         try {
             await AsyncStorage.setItem('token', token);
         } catch (error) {
-            console.error(error);
+            throw error;
         }
     }
 
@@ -87,7 +81,7 @@ class TokenManager {
         try {
             await AsyncStorage.removeItem('token');
         } catch (error) {
-            console.error(error);
+            throw error;
         }
     }
 }

@@ -37,18 +37,15 @@ export default function HomeScreen({ navigation }) {
                 const login = text.toLowerCase();
                 if (token) {
                     const user = await ApiService.getUserData(token, login);
-                    console.log(user);
                     setUserData(user);
                     const projects = await ApiService.getUserProjects(token, login);
-                    console.log(projects);
                     setUserProjects(projects);
                     const coalition = await ApiService.getUserCoalition(token, login);
-                    console.log(coalition);
                     setUserCoalition(coalition);
                     navigation.navigate('Profile', { userData: user, userProjects: projects, userCoalition: coalition });
                 }
             } catch (error) {
-                console.error(error);
+                throw error;
             }
         }
     };
