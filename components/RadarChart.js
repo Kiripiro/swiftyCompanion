@@ -34,14 +34,12 @@ const RadarChart = ({ skills }) => {
 		{ x: 'Functional programming', y: 0, label: '' },
 	];
 
-
 	skills.map(skill => {
 		let number = data.find(skillData => skillData.x === skill.name).y = skill.level;
 		skill.level = parseFloat(number.toFixed(2));
 		data.find(skillData => skillData.x === skill.name).label = `${skill.name}: ${skill.level}`;
 	});
 
-	// define the right number of tickValues for the chart (one for each data point)
 	const tickValues = data.map((point, index) => index);
 
 	const wrapLabel = (text, maxLength) => {
@@ -66,7 +64,7 @@ const RadarChart = ({ skills }) => {
 				polar
 				containerComponent={<VictoryVoronoiContainer />}
 				domain={{ y: [0, 20] }}
-				padding={{ top: 20, bottom: 20, left: 10, right: 10 }}
+				padding={{ top: 20, bottom: 20, left: 20, right: 20 }}
 			>
 				<VictoryPolarAxis
 					dependentAxis

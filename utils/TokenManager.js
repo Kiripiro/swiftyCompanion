@@ -1,11 +1,10 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { CLIENT_ID, SECRET } from "@env"
-import { ThemeProvider } from 'react-native-paper';
 
 class TokenManager {
     async getTokenInfo() {
         try {
-            const token = await AsyncStorage.getItem('token');
+            let token = await AsyncStorage.getItem('token');
             if (token) {
                 const isTokenValid = await this.isTokenValid(JSON.parse(token));
                 if (isTokenValid) {
@@ -26,19 +25,15 @@ class TokenManager {
     }
 
     async isTokenValid(token) {
-        try {
-            if (!token) {
-                throw new Error('No token provided');
-            }
-            const tokenExpiration = token.created_at + 7200;
-            const currentTime = Math.floor(Date.now() / 1000);
-            if (tokenExpiration < currentTime) {
-                throw new Error('Token is expired');
-            }
-            return true;
-        } catch (error) {
+        if (!token) {
+            throw new Error('No token provided');
+        }
+        const tokenExpiration = token.created_at + 7200;
+        const currentTime = Math.floor(Date.now() / 1000);
+        if (tokenExpiration < currentTime) {
             return false;
         }
+        return true;
     }
 
     async fetchNewToken() {

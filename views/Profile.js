@@ -1,19 +1,25 @@
-import React from 'react';
-import { Image, ImageBackground, StyleSheet, Text, View } from 'react-native';
+import { Image, ImageBackground, StyleSheet, Text, View, ScrollView } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { MaterialIcons } from '@expo/vector-icons';
 import MyProgressBar from '../components/ProgressBar';
 import RadarChart from '../components/RadarChart';
+import ProjectsList from '../components/ProjectsList';
+import { useState } from 'react';
 
 export default function ProfileScreen({ route, navigation }) {
     const { userData, userProjects, userCoalition } = route.params;
+    const [selectedCursus, setSelectedCursus] = useState('21');
+
+    const handleCursusChange = (newCursus) => {
+        setSelectedCursus(newCursus);
+    };
 
     return (
         <View style={styles.container}>
             <View style={styles.profileInfoContainer}>
-                <ImageBackground source={{ uri: userCoalition.cover }} style={styles.imageBackground}>
+                <ImageBackground source={{ uri: userCoalition?.cover }} style={styles.imageBackground}>
                     <Image style={styles.profileInfoContainerImage} source={{ uri: userData.profilePicture }} />
-                    <MyProgressBar value={userData.level} color={userCoalition.color} />
+                    <MyProgressBar value={selectedCursus == 21 ? userData.level : userData.levelPiscine} color={userCoalition.color} />
                 </ImageBackground>
                 <View style={styles.profileInfoContainerText}>
                     <Text style={styles.h3}>{userData.firstName} {userData.lastName} - {userData.login}</Text>
@@ -27,7 +33,16 @@ export default function ProfileScreen({ route, navigation }) {
                     </View>
                 </View>
             </View>
-            <RadarChart style={styles.radarChart} skills={userData.skills} />
+            <ScrollView style={styles.scrollView}>
+                <View style={styles.skillsView}>
+                    <Text style={[styles.h2, styles.sectionsTitles]}>Skills</Text>
+                    <RadarChart skills={userData.skills} />
+                </View>
+                <View style={styles.projectsView}>
+                    <Text style={[styles.h2, styles.sectionsTitles]}>Projects</Text>
+                    <ProjectsList projects={userProjects} onCursusChange={handleCursusChange} />
+                </View>
+            </ScrollView>
         </View>
     );
 }
@@ -59,7 +74,7 @@ const styles = StyleSheet.create({
         marginLeft: 5,
     },
     profileInfoContainer: {
-        flex: 1,
+        flex: 0.7,
         width: '100%',
     },
     imageBackground: {
@@ -76,13 +91,28 @@ const styles = StyleSheet.create({
         borderWidth: 1,
     },
     profileInfoContainerText: {
-        flex: 1,
+        flex: 0.4,
         flexDirection: 'column',
-        paddingLeft: 20,
         marginTop: 20,
+        marginBottom: 20,
+        marginHorizontal: 20,
     },
-    radarChart: {
+    scrollView: {
         flex: 1,
         width: '100%',
-    }
+    },
+    sectionsTitles: {
+        marginLeft: 20,
+        marginBottom: 10,
+    },
+    skillsView: {
+        flex: 1,
+        width: '100%',
+        marginBottom: 20,
+    },
+    projectsView: {
+        flex: 1,
+        width: '100%',
+        marginBottom: 20,
+    },
 });
