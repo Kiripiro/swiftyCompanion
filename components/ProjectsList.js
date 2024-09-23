@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, ImageBackground, Image, ScrollView } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { Picker } from "@react-native-picker/picker";
 
 const ProjectsList = ({ projects, onCursusChange }) => {
@@ -61,7 +61,14 @@ const ProjectsList = ({ projects, onCursusChange }) => {
                                 <Text style={styles.projectStatus}>Status: Finished</Text>
                                 <View style={styles.finalMarkContainer}>
                                     <Text style={styles.finalMarkText}>Final mark: </Text>
-                                    <Text style={[styles.projectMark, styles.greenText]}>{project.final_mark}</Text>
+                                    <Text
+                                        style={[
+                                            styles.projectMark,
+                                            project['validated?'] ? styles.greenText : styles.redText,
+                                        ]}
+                                    >
+                                        {project.final_mark}
+                                    </Text>
                                 </View>
                             </View>
                         );
@@ -114,6 +121,9 @@ const styles = StyleSheet.create({
     },
     greenText: {
         color: '#5cb85c',
+    },
+    redText: {
+        color: '#ff0000',
     },
     finalMarkContainer: {
         flexDirection: 'row',

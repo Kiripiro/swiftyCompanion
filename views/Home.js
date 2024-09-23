@@ -52,7 +52,7 @@ export default function HomeScreen({ navigation }) {
 					navigation.navigate('Profile', {
 						userData: user,
 						userProjects: user.projects,
-						userCoalition: coalition,
+						userCoalitions: coalition,
 					});
 				}
 			} catch (error) {

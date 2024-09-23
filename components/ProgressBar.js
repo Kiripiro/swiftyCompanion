@@ -1,16 +1,23 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text } from 'react-native';
 import { ProgressBar } from 'react-native-paper';
 
 const MyProgressBar = ({ value, color }) => {
-    let decimalValue = (value.toString().split('.')[1]) || 0;
-    const progress = parseFloat("0." + decimalValue);
+    const [progress, setProgress] = useState(0);
+    const [decimalValue, setDecimalValue] = useState(0);
 
-    if (decimalValue.toString().length < 2) {
-        decimalValue = decimalValue * 10;
-    } else if (decimalValue.toString().startsWith('0')) {
-        decimalValue = decimalValue.substring(1);
-    }
+    useEffect(() => {
+        let decimalPart = value.toString().split('.')[1] || '0';
+        
+        if (decimalPart.length < 2) {
+            decimalPart = decimalPart * 10;
+        } else if (decimalPart.startsWith('0')) {
+            decimalPart = decimalPart.substring(1);
+        }
+
+        setDecimalValue(decimalPart);
+        setProgress(parseFloat('0.' + decimalPart));
+    }, [value]);
 
     return (
         <View>
@@ -22,7 +29,7 @@ const MyProgressBar = ({ value, color }) => {
             <Text style={{ position: 'absolute', alignSelf: 'center', marginTop: 3 }}>
                 Level {value.toString().split('.')[0]} - {decimalValue}%
             </Text>
-        </View >
+        </View>
     );
 };
 
